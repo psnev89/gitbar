@@ -1,21 +1,18 @@
 import { createUser, signUserIn, signUserOut } from "@/services/auth";
-import { defineStore } from "pinia";
-import { computed, reactive } from "vue";
+import { computed, ref } from "vue";
 
-export const useAuthStore = defineStore("auth", () => {
-  // state
-  const state = reactive({
-    user: null,
-  });
+// shared state
+const userData = ref(null);
 
+export const useAuthStore = () => {
   // getters
-  const user = computed(() => state.user);
-  const isLoggedIn = computed(() => !!state.user);
+  const user = computed(() => userData.value);
+  const isLoggedIn = computed(() => !!userData.value);
 
   // actions
   // set user
   const setUser = (user) => {
-    state.user = user;
+    userData.value = user;
     return user;
   };
 
@@ -46,5 +43,5 @@ export const useAuthStore = defineStore("auth", () => {
     return [error];
   };
 
-  return { user, isLoggedIn, register, signIn, signOut, setUser };
-});
+  return { user, isLoggedIn, register, signIn, signOut };
+};

@@ -1,0 +1,18 @@
+[
+    {
+        "display": "Sort by stars",
+        "value": "stars"
+    },
+    {
+        "display": "Sort by forks",
+        "value": "forks"
+    },
+    {
+        "display": "Sort by help wanted issues",
+        "value": "help-wanted-issues"
+    },
+    {
+        "display": "Sort by updated",
+        "value": "pushed"
+    }
+]
