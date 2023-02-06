@@ -1,13 +1,14 @@
 <script setup>
-import { readonly, reactive, watchEffect, ref } from "vue";
+import { readonly, reactive, watchEffect } from "vue";
 import { useRepositoriesStore } from "@/stores/useRepositoriesStore";
 import { useTopicsStore } from "@/stores/useTopicsStore";
 import sortByOptions from "@/config/reposSortOptions.json";
-import IconChevron from "./icons/IconChevron.vue";
 
 // components
 import AppDropdown from "@/components/ui/AppDropdown.vue";
 import RepositoryItem from "./RepositoryItem.vue";
+import AppSectionTitle from "./ui/AppSectionTitle.vue";
+import IconChevron from "./icons/IconChevron.vue";
 
 const props = defineProps({
   topic: {
@@ -37,9 +38,8 @@ watchEffect(async () => {
 <template>
   <div class="topic-container">
     <div class="flex mb-4">
-      <h2 class="text-2xl font-semibold mr-4">
-        Top {{ ctxTopic.displayName }}
-      </h2>
+      <AppSectionTitle :title="`Top ${ctxTopic.displayName}`">
+      </AppSectionTitle>
 
       <AppDropdown
         v-model="searchQuery.sort"
