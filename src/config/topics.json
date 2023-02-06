@@ -2,31 +2,31 @@
     "vue": {
         "id": "vue",
         "displayName": "Vue",
-        "apiValue": "vue"
+        "value": "vue"
     },
     "typescript": {
         "id": "typescript",
         "displayName": "Typescript",
-        "apiValue": "typescript"
+        "value": "typescript"
     },
     "javascript": {
         "id": "javascript",
         "displayName": "Javascript",
-        "apiValue": "javascript"
+        "value": "javascript"
     },
     "go": {
         "id": "go",
         "displayName": "Go",
-        "apiValue": "go"
+        "value": "go"
     },
     "css": {
         "id": "css",
         "displayName": "CSS",
-        "apiValue": "css"
+        "value": "css"
     },
     "node": {
         "id": "node",
         "displayName": "Node",
-        "apiValue": "node"
+        "value": "node"
     }
 }

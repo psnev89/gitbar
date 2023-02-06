@@ -12,6 +12,7 @@ export const useAuthStore = () => {
   // actions
   // set user
   const setUser = (user) => {
+    console.log("setting", userData);
     userData.value = user;
     return user;
   };
@@ -43,5 +44,5 @@ export const useAuthStore = () => {
     return [error];
   };
 
-  return { user, isLoggedIn, register, signIn, signOut };
+  return { user, isLoggedIn, register, signIn, signOut, setUser };
 };

@@ -8,6 +8,7 @@ export const useRepositoriesStore = () => {
   });
 
   const repositories = computed(() => {
+    console.log(state.repositoriesData);
     return state.repositoriesData.map(
       (r) => new Repository(r.id, r.fullName, r.hyperlink)
     );

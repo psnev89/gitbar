@@ -5,6 +5,7 @@ import { reactive } from "vue";
 
 // components
 import TopicRepositoriesList from "../components/TopicRepositoriesList.vue";
+import AppButton from "../components/ui/AppButton.vue";
 
 const topicsStore = useTopicsStore();
 const { repositories: bookmarks } = useRepositoriesStore();
@@ -24,27 +25,43 @@ const toggleTopicSelection = (topic) => {
 
 <template>
   <main>
-    <div v-show="bookmarks.length">
+    <section v-show="bookmarks.length">
       <h2>My Bookmarks</h2>
       <ul>
         <li v-for="repo in bookmarks" :key="repo.Id">
           repo: {{ repo.FullName }}
         </li>
       </ul>
-    </div>
-    <h4>Toggle topics to show</h4>
-    <ul>
-      <li v-for="topic in topicsStore.allTopics" :key="topic">
-        <button @click="toggleTopicSelection(topic)">
-          {{ topicsStore.getByKey(topic).displayName }}
-        </button>
-      </li>
-    </ul>
+    </section>
+    <section>
+      <h4>Toggle topics to show</h4>
+      <div class="topics-list">
+        <AppButton
+          v-for="topic in topicsStore.allTopics"
+          :key="topic"
+          :label="topicsStore.getByKey(topic).displayName"
+          :active="selectedTopics.includes(topic)"
+          pill
+          @click="toggleTopicSelection(topic)"
+        ></AppButton>
+      </div>
+    </section>
+
     <template v-for="topic in topicsStore.allTopics" :key="topic">
-      <TopicRepositoriesList
-        v-show="selectedTopics.includes(topic)"
-        :topic="topic"
-      ></TopicRepositoriesList>
+      <section>
+        <TopicRepositoriesList
+          v-show="selectedTopics.includes(topic)"
+          :topic="topic"
+        ></TopicRepositoriesList>
+      </section>
     </template>
   </main>
 </template>
+
+<style scoped lang="scss">
+main {
+  > section {
+    @apply mb-16;
+  }
+}
+</style>

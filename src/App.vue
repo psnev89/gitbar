@@ -1,28 +1,11 @@
 <script setup>
-import { RouterLink, RouterView, useRouter } from "vue-router";
-import { useAuthStore } from "./stores/useAuthStore";
+import { RouterView } from "vue-router";
 
-const { push } = useRouter();
-const authStore = useAuthStore();
-
-const handleLogout = async () => {
-  const [error] = await authStore.signOut();
-  if (!error) push({ name: "SignInView" });
-};
+// components
+import AppHeader from "./components/ui/AppHeader.vue";
 </script>
 
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">Discovery</RouterLink>
-      <template v-if="authStore.isLoggedIn">
-        <a @click="handleLogout">Logout</a>
-        <h2>{{ authStore.user.email }}</h2>
-      </template>
-    </nav>
-  </header>
-
-  <RouterView />
+  <AppHeader></AppHeader>
+  <RouterView class="mt-16 container mx-auto p-10" />
 </template>
-
-<style scoped></style>
