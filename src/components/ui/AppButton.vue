@@ -12,6 +12,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["click"]);
@@ -24,6 +28,7 @@ const emit = defineEmits(["click"]);
       '--active': props.active,
       '--pill': props.pill,
     }"
+    :disabled="disabled"
     @click="emit('click')"
   >
     {{ props.label }}
@@ -44,6 +49,10 @@ button {
 
   &.--active {
     @apply bg-primary hover:bg-primary/90;
+  }
+  
+  &:disabled {
+    @apply cursor-not-allowed;
   }
 }
 </style>

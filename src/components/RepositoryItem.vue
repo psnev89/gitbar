@@ -25,7 +25,7 @@ const srcHash = createHash();
 const imgLoaded = ref(false);
 const starIconOpts = computed(() => ({
   strokeColor: props.bookmarked ? "#F7BE38" : "gray",
-  fillColor: props.bookmarked ? "#F7BE38" : "transparent",
+  fillColor: props.bookmarked ? "#F7BE38" : "white",
 }));
 </script>
 

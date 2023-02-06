@@ -3,6 +3,10 @@ import { reactive, ref } from "vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { RouterLink, useRouter } from "vue-router";
 
+// components
+import AppInput from "../components/ui/AppInput.vue";
+import AppButton from "../components/ui/AppButton.vue";
+
 // form initial state
 const form = reactive({
   email: "",
@@ -25,34 +29,53 @@ const handleSubmit = async () => {
     password: form.password,
   });
   if (registerError) error.value = registerError;
-  else push({ name: "HomeView" });
+  else push("/");
   isLoading.value = false;
 };
 </script>
 
 <template>
-  <main>
+  <main class="max-w-sm">
     <form @submit.prevent="handleSubmit">
-      <h3>Register</h3>
+      <AppInput v-model="form.email" type="email" label="Email"></AppInput>
+      <AppInput
+        v-model="form.password"
+        type="password"
+        label="Password"
+      ></AppInput>
 
-      <div>
-        <label>Email:</label><br />
-        <input type="email" v-model="form.email" />
-      </div>
-
-      <div>
-        <label>Password:</label><br />
-        <input type="password" v-model="form.password" />
-      </div>
-
-      <button :disabled="isLoading">Register</button>
-      <div v-if="error">{{ error.message }}</div>
+      <AppButton
+        :disabled="isLoading"
+        active
+        class="block w-full rounded-md"
+        label="Sign In"
+        @click="handleSubmit"
+      ></AppButton>
     </form>
-    <div>
-      <span> Already have an account? </span>
-      <RouterLink :to="{ name: 'SignInView' }">
+    <div class="mt-6 text-sm text-center text-gray-600">
+      <span> Don't have an account? </span>
+      <RouterLink
+        :to="{ name: 'SignInView' }"
+        class="underline transition-colors duration-75 hover:text-primary"
+      >
         Click here to sign in.
       </RouterLink>
     </div>
+    <div
+      v-if="error"
+      class="p-3 mt-4 text-sm text-red-800 rounded-lg bg-red-100"
+      role="alert"
+    >
+      <span class="font-medium">Something went wrong. </span>
+      {{ error.message }}
+    </div>
   </main>
 </template>
+
+<style lang="scss" scoped>
+form {
+  > *:not(:last-child) {
+    @apply mb-4;
+  }
+}
+</style>

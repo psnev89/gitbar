@@ -6,8 +6,8 @@
  * In the future, we could separate all these routes into some modules files by context (i.e., auth, user, repos, ...)
  */
 import { createRouter, createWebHistory } from "vue-router";
-import DiscoveryView from "../views/DiscoveryView.vue";
-import SignInView from "../views/SignInView.vue";
+import DiscoveryView from "@/views/DiscoveryView.vue";
+import SignInView from "@/views/SignInView.vue";
 import checkAuth from "./middlewares/checkAuth";
 
 const router = createRouter({
