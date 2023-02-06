@@ -18,12 +18,18 @@ export const getRepositories = ({ topic, sort, perPage, page }) => {
     .sortBy(sort)
     .build();
 
-  console.log(query);
-
   return new Promise((resolve, reject) => {
     httpClient
       .get("https://api.github.com/search/repositories" + query)
-      .then((res) => resolve(res.data?.items?.map?.(parse) ?? []))
+      .then((res) =>
+        resolve({
+          items: res.data?.items?.map?.(parse) ?? [],
+          meta: {
+            totalReposOfQuery: res.data.total_count,
+            totalPages: Math.ceil(res.data.total_count / perPage),
+          },
+        })
+      )
       .catch((err) => reject(err));
   });
 };

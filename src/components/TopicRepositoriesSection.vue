@@ -6,9 +6,8 @@ import sortByOptions from "@/config/reposSortOptions.json";
 
 // components
 import AppDropdown from "@/components/ui/AppDropdown.vue";
-import RepositoryItem from "./RepositoryItem.vue";
 import AppSectionTitle from "./ui/AppSectionTitle.vue";
-import IconChevron from "./icons/IconChevron.vue";
+import RepositoryList from "./RepositoryList.vue";
 
 const props = defineProps({
   topic: {
@@ -18,7 +17,14 @@ const props = defineProps({
 });
 
 const topicsStore = useTopicsStore();
-const { repositories, getRepositoriesOfQuery } = useRepositoriesStore();
+const {
+  repositories,
+  totalPages,
+  getRepositoriesOfQuery,
+  bookmarkRepositoryOfId,
+  removeRepositoryBookmarkOfId,
+  isRepositoryOfIdBookmarked,
+} = useRepositoriesStore();
 
 const ctxTopic = readonly(topicsStore.getByKey(props.topic));
 
@@ -33,6 +39,14 @@ watchEffect(async () => {
   const [error] = await getRepositoriesOfQuery(searchQuery);
   if (error) console.warn("Error fetching repositories");
 });
+
+const toggleBookmark = ($repo) => {
+  if (isRepositoryOfIdBookmarked($repo.Id)) {
+    removeRepositoryBookmarkOfId($repo.Id);
+  } else {
+    bookmarkRepositoryOfId($repo.Id);
+  }
+};
 </script>
 
 <template>
@@ -47,55 +61,19 @@ watchEffect(async () => {
       ></AppDropdown>
     </div>
 
-    <div>
-      <a role="button" class="pagination-link" @click="searchQuery.page++">
-        <IconChevron
-          size="40px"
-          class="-rotate-90 absolute right-0 top-[50%] pagination-icon"
-        ></IconChevron>
-      </a>
-      <div class="repo-slider">
-        <RepositoryItem
-          v-for="repo in repositories"
-          :key="repo.Id"
-          :repository="repo"
-        ></RepositoryItem>
-      </div>
-      <a role="button" class="pagination-link" @click="searchQuery.page++">
-        <IconChevron
-          size="40px"
-          class="-rotate-90 pagination-icon"
-        ></IconChevron>
-      </a>
-    </div>
+    <RepositoryList
+      :repositories="repositories"
+      :has-next-page="totalPages > searchQuery.page"
+      :has-previous-page="searchQuery.page > 1"
+      @previous-page="searchQuery.page--"
+      @next-page="searchQuery.page++"
+      @repo-bookmark="toggleBookmark"
+    ></RepositoryList>
   </div>
 </template>
 
 <style scoped lang="scss">
 .topic-container {
   @apply -mx-10 px-10 relative;
-
-  .pagination-link {
-    @apply opacity-0 absolute right-0 top-[50%];
-  }
-
-  &:hover {
-    .pagination-link {
-      @apply opacity-100;
-    }
-  }
-}
-
-.pagination-icon {
-  @apply hover:text-primary;
-}
-
-.repo-slider {
-  @apply grid gap-1 relative;
-  z-index: 2;
-  grid-template-columns: repeat(
-    v-bind("searchQuery.perPage"),
-    minmax(100px, 1fr)
-  );
 }
 </style>

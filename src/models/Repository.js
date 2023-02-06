@@ -8,11 +8,11 @@ export default class Repository {
   #hyperlink;
   #bookmarked;
 
-  constructor(id, fullName, hyperlink) {
+  constructor(id, fullName, hyperlink, bookmarked = false) {
     this.#id = id;
     this.#fullName = fullName;
     this.#hyperlink = hyperlink;
-    this.#bookmarked = false;
+    this.#bookmarked = bookmarked;
   }
 
   get Id() {

@@ -11,10 +11,6 @@ const props = defineProps({
     type: Repository,
     required: true,
   },
-  bookmarked: {
-    type: Boolean,
-    default: false,
-  },
 });
 
 const emit = defineEmits(["bookmark"]);
@@ -24,8 +20,8 @@ const srcHash = createHash();
 
 const imgLoaded = ref(false);
 const starIconOpts = computed(() => ({
-  strokeColor: props.bookmarked ? "#F7BE38" : "gray",
-  fillColor: props.bookmarked ? "#F7BE38" : "white",
+  strokeColor: props.repository.IsBookmarked ? "#F7BE38" : "gray",
+  fillColor: props.repository.IsBookmarked ? "#F7BE38" : "white",
 }));
 </script>
 
@@ -81,11 +77,11 @@ a.repo-img-link {
         rgba(#fff, 0.5) 60%,
         rgba(#fff, 0)
       );
-      animation: shimmer 2s infinite;
+      animation: wave 2s infinite;
       content: "";
     }
 
-    @keyframes shimmer {
+    @keyframes wave {
       100% {
         transform: translateX(100%);
       }
@@ -101,12 +97,12 @@ a.repo-img-link {
     z-index: 500;
     transform: scale(1.4);
 
-    &:first-child {
-      transform: scale(1.4) translateX(14%);
-    }
-
     &:last-child {
       transform: scale(1.4) translateX(-14%);
+    }
+
+    &:first-child {
+      transform: scale(1.4) translateX(14%);
     }
 
     a.bookmark {

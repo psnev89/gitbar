@@ -4,12 +4,13 @@ import { useTopicsStore } from "@/stores/useTopicsStore";
 import { reactive } from "vue";
 
 // components
-import TopicRepositoriesList from "../components/TopicRepositoriesList.vue";
+import TopicRepositoriesSection from "../components/TopicRepositoriesSection.vue";
 import AppButton from "../components/ui/AppButton.vue";
 import AppSectionTitle from "../components/ui/AppSectionTitle.vue";
+import RepositoryList from "../components/RepositoryList.vue";
 
 const topicsStore = useTopicsStore();
-const { repositories: bookmarks } = useRepositoriesStore();
+const { bookmarkedRepositories } = useRepositoriesStore();
 
 const selectedTopics = reactive([...topicsStore.allTopics]);
 const toggleTopicSelection = (topic) => {
@@ -23,12 +24,16 @@ const toggleTopicSelection = (topic) => {
   <main>
     <!-- Bookmarks section -->
     <section>
-      <AppSectionTitle title="My Bookmarks"></AppSectionTitle>
-      <ul v-if="bookmarks.length">
-        <li v-for="repo in bookmarks" :key="repo.Id">
-          repo: {{ repo.FullName }}
-        </li>
-      </ul>
+      <AppSectionTitle title="My Bookmarks" class="mb-4"></AppSectionTitle>
+
+      <RepositoryList
+        v-if="bookmarkedRepositories.length"
+        :repositories="bookmarkedRepositories"
+        :per-page="6"
+      ></RepositoryList>
+      <div v-else class="text-sm text-left">
+        Bookmarked repositories will be displayed here
+      </div>
     </section>
 
     <!-- Topics Toggler section -->
@@ -49,10 +54,10 @@ const toggleTopicSelection = (topic) => {
     <!-- Repo Listing section -->
     <template v-for="topic in topicsStore.allTopics" :key="topic">
       <section>
-        <TopicRepositoriesList
+        <TopicRepositoriesSection
           v-show="selectedTopics.includes(topic)"
           :topic="topic"
-        ></TopicRepositoriesList>
+        ></TopicRepositoriesSection>
       </section>
     </template>
   </main>
