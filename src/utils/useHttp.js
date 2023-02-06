@@ -17,7 +17,6 @@ export const useHttp = () => {
     try {
       loading.value = true;
       const response = await httpClient.get(url);
-      console.log({ response });
       data.value = response.data;
     } catch (err) {
       error.value = err;

@@ -12,7 +12,6 @@ export const useAuthStore = () => {
   // actions
   // set user
   const setUser = (user) => {
-    console.log("setting", userData);
     userData.value = user;
     return user;
   };

@@ -9,7 +9,6 @@ export default async (to) => {
   // check if user is logged in
   if (!isLoggedIn.value) {
     const user = await getCurrentUser();
-    console.log({ user });
     setUser(user?.uid ? user : null);
   }
 
