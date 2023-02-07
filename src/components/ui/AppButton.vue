@@ -50,7 +50,7 @@ button {
   &.--active {
     @apply bg-primary hover:bg-primary/90;
   }
-  
+
   &:disabled {
     @apply cursor-not-allowed;
   }
