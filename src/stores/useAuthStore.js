@@ -4,11 +4,17 @@ import {
   signUserOut,
   updateUserProfile,
 } from "@/services/auth";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import User from "@/models/User";
+import { useLocalStorage } from "../utils/useLocalStorage";
 
 // shared state
 const userData = ref(null);
+
+const bookmarksLocalStorage = useLocalStorage("bookmarks");
+watch(userData, (newUser, oldUser) => {
+  if (newUser?.uid !== oldUser?.uid) bookmarksLocalStorage.remove();
+});
 
 export const useAuthStore = () => {
   // getters

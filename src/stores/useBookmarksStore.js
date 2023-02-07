@@ -1,8 +1,12 @@
 import Repository from "@/models/Repository";
-import { reactive, computed, ref } from "vue";
+import { reactive, computed, ref, watch } from "vue";
+import { useLocalStorage } from "@/utils/useLocalStorage";
 
 // "global" state
-const bookmarked = reactive([]);
+const bookmarksLocalStorage = useLocalStorage("bookmarks");
+const bookmarked = reactive(bookmarksLocalStorage.get() ?? []);
+
+watch(bookmarked, (val) => bookmarksLocalStorage.set(val));
 
 export const useBookmarksStore = (options = {}) => {
   const { perPage = 6, initialPage = 1 } = options;

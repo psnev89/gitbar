@@ -34,16 +34,14 @@ const searchQuery = reactive({
 
 watchEffect(async () => {
   const [error] = await getRepositoriesOfQuery(searchQuery);
-  if (error) console.warn("Error fetching repositories");
+  if (error) console.error("Error: Error fetching repositories");
 });
 
 const toggleBookmark = ($repo) => {
-  console.log({ $repo });
   if (bookmarkOfIdExists($repo.Id)) {
     removeBookmarkOfId($repo.Id);
   } else {
     const repo = getRepositoryOfId($repo.Id);
-    console.log({ repo });
     if (!repo) return;
     addBookmark(repo);
   }
