@@ -51,7 +51,7 @@ const toggleBookmark = ($repo) => {
 </script>
 
 <template>
-  <div class="topic-container">
+  <section class="topic-container">
     <div class="flex mb-4">
       <AppSectionTitle :title="`Top ${ctxTopic.displayName}`">
       </AppSectionTitle>
@@ -70,7 +70,7 @@ const toggleBookmark = ($repo) => {
       @next-page="searchQuery.page++"
       @repo-bookmark="toggleBookmark"
     ></RepositoryList>
-  </div>
+  </section>
 </template>
 
 <style scoped lang="scss">

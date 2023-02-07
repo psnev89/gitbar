@@ -1,25 +1,13 @@
 <script setup>
-import { useBookmarksStore } from "@/stores/useBookmarksStore";
 import { useTopicsStore } from "@/stores/useTopicsStore";
 import { reactive } from "vue";
 
 // components
-import TopicRepositoriesSection from "../components/TopicRepositoriesSection.vue";
-import AppButton from "../components/ui/AppButton.vue";
-import AppSectionTitle from "../components/ui/AppSectionTitle.vue";
-import RepositoryList from "../components/RepositoryList.vue";
+import TopicRepositoriesSection from "@/components/TopicRepositoriesSection.vue";
+import BookmarkedRepositoriesSection from "@/components/BookmarkedRepositoriesSection.vue";
+import AppButton from "@/components/ui/AppButton.vue";
 
 const topicsStore = useTopicsStore();
-const bookmarksPerPage = 6;
-const {
-  allBookmarkedRepositories,
-  paginatedBookmarkedRepositories,
-  hasNextPage,
-  hasPreviousPage,
-  nextPage,
-  previousPage,
-  removeBookmarkOfId,
-} = useBookmarksStore({ perPage: bookmarksPerPage });
 
 const selectedTopics = reactive([...topicsStore.allTopics]);
 const toggleTopicSelection = (topic) => {
@@ -32,23 +20,7 @@ const toggleTopicSelection = (topic) => {
 <template>
   <main>
     <!-- Bookmarks section -->
-    <section>
-      <AppSectionTitle title="My Bookmarks" class="mb-4"></AppSectionTitle>
-
-      <RepositoryList
-        v-if="allBookmarkedRepositories.length"
-        :repositories="paginatedBookmarkedRepositories"
-        :per-page="bookmarksPerPage"
-        :has-next-page="hasNextPage"
-        :has-previous-page="hasPreviousPage"
-        @previous-page="previousPage"
-        @next-page="nextPage"
-        @repo-bookmark="removeBookmarkOfId($event.Id)"
-      ></RepositoryList>
-      <div v-else class="text-sm text-left">
-        Bookmarked repositories will be displayed here
-      </div>
-    </section>
+    <BookmarkedRepositoriesSection></BookmarkedRepositoriesSection>
 
     <!-- Topics Toggler section -->
     <section>
@@ -67,12 +39,10 @@ const toggleTopicSelection = (topic) => {
 
     <!-- Repo Listing section -->
     <template v-for="topic in topicsStore.allTopics" :key="topic">
-      <section>
-        <TopicRepositoriesSection
-          v-show="selectedTopics.includes(topic)"
-          :topic="topic"
-        ></TopicRepositoriesSection>
-      </section>
+      <TopicRepositoriesSection
+        v-show="selectedTopics.includes(topic)"
+        :topic="topic"
+      ></TopicRepositoriesSection>
     </template>
   </main>
 </template>
