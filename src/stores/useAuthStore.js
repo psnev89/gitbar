@@ -1,18 +1,26 @@
-import { createUser, signUserIn, signUserOut } from "@/services/auth";
-import { computed, ref } from "vue";
+import {
+  createUser,
+  signUserIn,
+  signUserOut,
+  updateUserProfile,
+} from "@/services/auth";
+import { computed, reactive } from "vue";
+import User from "@/models/User";
 
 // shared state
-const userData = ref(null);
+const userData = reactive({});
 
 export const useAuthStore = () => {
   // getters
-  const user = computed(() => userData.value);
-  const isLoggedIn = computed(() => !!userData.value);
+  const user = computed(
+    () => new User(userData.uid, userData.email, userData.displayName)
+  );
+  const isLoggedIn = computed(() => !!userData.uid);
 
   // actions
   // set user
   const setUser = (user) => {
-    userData.value = user;
+    Object.assign(userData, { ...user });
     return user;
   };
 
@@ -43,5 +51,26 @@ export const useAuthStore = () => {
     return [error];
   };
 
-  return { user, isLoggedIn, register, signIn, signOut, setUser };
+  // user profile update
+  const updateProfile = async ({ username, email }) => {
+    let error, data;
+    await updateUserProfile({ username, email })
+      .then((res) => {
+        userData.displayName = username;
+        userData.email = email;
+        data = res;
+      })
+      .catch((err) => (error = err));
+    return [error, data];
+  };
+
+  return {
+    user,
+    isLoggedIn,
+    register,
+    signIn,
+    signOut,
+    setUser,
+    updateProfile,
+  };
 };

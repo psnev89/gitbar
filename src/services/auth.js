@@ -6,6 +6,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
+  updateProfile,
+  updateEmail,
 } from "firebase/auth";
 
 import firebase from "@/infra/firebase";
@@ -14,8 +16,8 @@ import firebase from "@/infra/firebase";
 export const createUser = async ({ email, password }) => {
   return new Promise((resolve, reject) => {
     createUserWithEmailAndPassword(firebase.auth, email, password)
-      .then((res) => resolve(res))
-      .catch((e) => reject(e));
+      .then(resolve)
+      .catch(reject);
   });
 };
 
@@ -23,17 +25,31 @@ export const createUser = async ({ email, password }) => {
 export const signUserIn = async ({ email, password }) => {
   return new Promise((resolve, reject) => {
     signInWithEmailAndPassword(firebase.auth, email, password)
-      .then((res) => resolve(res))
-      .catch((e) => reject(e));
+      .then(resolve)
+      .catch(reject);
   });
 };
 
 // sign out service
 export const signUserOut = async () => {
   return new Promise((resolve, reject) => {
-    firebaseSignOut(firebase.auth)
-      .then((res) => resolve(res))
-      .catch((e) => reject(e));
+    firebaseSignOut(firebase.auth).then(resolve).catch(reject);
+  });
+};
+
+// update user
+export const updateUserProfile = async ({ username, email }) => {
+  return new Promise((resolve, reject) => {
+    const promises = [];
+    if (email !== firebase.auth.currentUser.email) {
+      promises.push(updateEmail(firebase.auth.currentUser, email));
+    }
+    if (username != firebase.auth.currentUser.displayName) {
+      promises.push(
+        updateProfile(firebase.auth.currentUser, { displayName: username })
+      );
+    }
+    Promise.all(promises).then(resolve).catch(reject);
   });
 };
 

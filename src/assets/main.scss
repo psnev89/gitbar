@@ -4,6 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background: linear-gradient(0deg, #ddd 0%, #eee 40%, #fff 100%);
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 #app {
   font-family: "Rubik", sans-serif;
   font-weight: normal;

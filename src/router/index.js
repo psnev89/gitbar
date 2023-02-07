@@ -7,6 +7,7 @@
  */
 import { createRouter, createWebHistory } from "vue-router";
 import DiscoveryView from "@/views/DiscoveryView.vue";
+import AccountView from "@/views/AccountView.vue";
 import SignInView from "@/views/SignInView.vue";
 import checkAuth from "./middlewares/checkAuth";
 
@@ -17,6 +18,14 @@ const router = createRouter({
       path: "/",
       name: "DiscoveryView",
       component: DiscoveryView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: "/account",
+      name: "AccountView",
+      component: AccountView,
       meta: {
         requiresAuth: true,
       },

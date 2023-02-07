@@ -2,6 +2,9 @@
 import { RouterLink, useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/useAuthStore";
 
+// components
+import IconAccount from "../icons/IconAccount.vue";
+
 const { push } = useRouter();
 const { isLoggedIn, user, signOut } = useAuthStore();
 
@@ -16,11 +19,18 @@ const handleLogout = async () => {
     <div class="container mx-auto flex items-center h-full px-10">
       <h1 class="logo">GitBar</h1>
       <nav class="flex-1 flex ml-6">
-        <RouterLink class="mr-auto" to="/" active-class="active-link">
+        <RouterLink class="mr-auto nav-link" to="/" active-class="active-link">
           Discovery
         </RouterLink>
         <template v-if="isLoggedIn">
-          <span>{{ user.email }}</span>
+          <RouterLink
+            class="nav-link"
+            :to="{ name: 'AccountView' }"
+            active-class="active-link"
+          >
+            <IconAccount class="inline-block mr-2"></IconAccount>
+            <span class="capitalize">Cheers, {{ user.DisplayName }}</span>
+          </RouterLink>
           <a class="logout-button" @click="handleLogout">Logout</a>
         </template>
       </nav>
@@ -30,11 +40,14 @@ const handleLogout = async () => {
 
 <style lang="scss" scoped>
 header {
-  @apply bg-gray-100 fixed z-20 top-0 left-0 right-0 border-b border-gray-200 h-16;
+  @apply bg-gray-700 fixed z-20 top-0 left-0 right-0 border-b border-gray-200 h-16;
 
-  h1 {
-    @apply font-extrabold text-2xl bg-clip-text bg-gradient-to-t from-black/10 to-yellow-400;
-    -webkit-text-fill-color: transparent;
+  h1.logo {
+    @apply font-extrabold text-4xl text-primary;
+  }
+
+  nav {
+    @apply text-white;
   }
 
   .active-link {
@@ -45,6 +58,9 @@ header {
     }
   }
 
+  .nav-link {
+    @apply hover:text-primary transition-colors duration-75;
+  }
   .logout-button {
     @apply ml-8 cursor-pointer hover:text-primary transition-colors duration-75;
   }

@@ -9,7 +9,7 @@ export default async (to) => {
   // check if user is logged in
   if (!isLoggedIn.value) {
     const user = await getCurrentUser();
-    setUser(user?.uid ? user : null);
+    setUser(user?.uid ? user : {});
   }
 
   // is logged and navigating to sign in/up routes?
