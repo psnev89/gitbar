@@ -19,10 +19,14 @@ const handleLogout = async () => {
     <div class="container mx-auto flex items-center h-full px-10">
       <h1 class="logo">GitBar</h1>
       <nav class="flex-1 flex ml-6">
-        <RouterLink class="mr-auto nav-link" to="/" active-class="active-link">
-          Discovery
-        </RouterLink>
         <template v-if="isLoggedIn">
+          <RouterLink
+            class="mr-auto nav-link"
+            to="/"
+            active-class="active-link"
+          >
+            Discovery
+          </RouterLink>
           <RouterLink
             class="nav-link"
             :to="{ name: 'AccountView' }"
