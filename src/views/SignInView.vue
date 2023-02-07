@@ -6,6 +6,7 @@ import { RouterLink, useRouter } from "vue-router";
 // components
 import AppInput from "../components/ui/AppInput.vue";
 import AppButton from "../components/ui/AppButton.vue";
+import AppErrorFeedback from "../components/ui/AppErrorFeedback.vue";
 
 // form initial state
 const form = reactive({
@@ -61,14 +62,12 @@ const handleSubmit = async () => {
         Click here to sign up.
       </RouterLink>
     </div>
-    <div
+
+    <AppErrorFeedback
       v-if="error"
-      class="p-3 mt-4 text-sm text-red-800 rounded-lg bg-red-100"
-      role="alert"
-    >
-      <span class="font-medium">Something went wrong. </span>
-      {{ error.message }}
-    </div>
+      class="mt-4"
+      :message="error.message"
+    ></AppErrorFeedback>
   </main>
 </template>
 

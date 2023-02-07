@@ -1,11 +1,13 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useNotify } from "@/utils/useNotify";
 import { RouterLink, useRouter } from "vue-router";
 
 // components
 import AppInput from "../components/ui/AppInput.vue";
 import AppButton from "../components/ui/AppButton.vue";
+import AppErrorFeedback from "../components/ui/AppErrorFeedback.vue";
 
 // form initial state
 const form = reactive({
@@ -19,6 +21,7 @@ const error = ref(null);
 
 const authStore = useAuthStore();
 const { push } = useRouter();
+const { notifySuccess } = useNotify();
 
 // form submit handler
 const handleSubmit = async () => {
@@ -29,7 +32,10 @@ const handleSubmit = async () => {
     password: form.password,
   });
   if (registerError) error.value = registerError;
-  else push("/");
+  else {
+    push("/");
+    notifySuccess("Successfully registered");
+  }
   isLoading.value = false;
 };
 </script>
@@ -61,14 +67,11 @@ const handleSubmit = async () => {
         Click here to sign in.
       </RouterLink>
     </div>
-    <div
+    <AppErrorFeedback
       v-if="error"
-      class="p-3 mt-4 text-sm text-red-800 rounded-lg bg-red-100"
-      role="alert"
-    >
-      <span class="font-medium">Something went wrong. </span>
-      {{ error.message }}
-    </div>
+      class="mt-4"
+      :message="error.message"
+    ></AppErrorFeedback>
   </main>
 </template>
 

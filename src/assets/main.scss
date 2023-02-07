@@ -19,3 +19,11 @@ body {
 .section-title {
   @apply text-2xl font-semibold mr-4;
 }
+
+// toast
+.notification-error {
+  @apply text-sm text-red-800 rounded-lg bg-red-100;
+}
+.notification-success {
+  @apply text-sm text-green-800 rounded-lg bg-green-100;
+}

@@ -1,13 +1,15 @@
 <script setup>
-import { readonly, reactive, watchEffect } from "vue";
+import { readonly, reactive, watchEffect, ref } from "vue";
 import { useRepositoriesStore } from "@/stores/useRepositoriesStore";
 import { useTopicsStore } from "@/stores/useTopicsStore";
 import { useBookmarksStore } from "../stores/useBookmarksStore";
+import { useNotify } from "../utils/useNotify";
 import sortByOptions from "@/config/reposSortOptions.json";
 
 // components
 import AppDropdown from "@/components/ui/AppDropdown.vue";
 import AppSectionTitle from "./ui/AppSectionTitle.vue";
+import AppErrorFeedback from "./ui/AppErrorFeedback.vue";
 import RepositoryList from "./RepositoryList.vue";
 
 const props = defineProps({
@@ -22,6 +24,7 @@ const { repositories, totalPages, getRepositoriesOfQuery, getRepositoryOfId } =
   useRepositoriesStore();
 const { addBookmark, removeBookmarkOfId, bookmarkOfIdExists } =
   useBookmarksStore();
+const { notifyError } = useNotify();
 
 const ctxTopic = readonly(topicsStore.getByKey(props.topic));
 
@@ -32,9 +35,15 @@ const searchQuery = reactive({
   sort: "stars",
 });
 
+const error = ref(null);
+
 watchEffect(async () => {
-  const [error] = await getRepositoriesOfQuery(searchQuery);
-  if (error) console.error("Error: Error fetching repositories");
+  error.value = null;
+  const [sqError] = await getRepositoriesOfQuery(searchQuery);
+  if (sqError) {
+    notifyError("Error: Error fetching repositories");
+    error.value = sqError;
+  }
 });
 
 const toggleBookmark = ($repo) => {
@@ -60,7 +69,9 @@ const toggleBookmark = ($repo) => {
       ></AppDropdown>
     </div>
 
+    <AppErrorFeedback v-if="error" :message="error.message"></AppErrorFeedback>
     <RepositoryList
+      v-else
       :repositories="repositories"
       :has-next-page="totalPages > searchQuery.page"
       :has-previous-page="searchQuery.page > 1"
