@@ -2,6 +2,7 @@
 import { readonly, reactive, watchEffect } from "vue";
 import { useRepositoriesStore } from "@/stores/useRepositoriesStore";
 import { useTopicsStore } from "@/stores/useTopicsStore";
+import { useBookmarksStore } from "../stores/useBookmarksStore";
 import sortByOptions from "@/config/reposSortOptions.json";
 
 // components
@@ -17,14 +18,10 @@ const props = defineProps({
 });
 
 const topicsStore = useTopicsStore();
-const {
-  repositories,
-  totalPages,
-  getRepositoriesOfQuery,
-  bookmarkRepositoryOfId,
-  removeRepositoryBookmarkOfId,
-  isRepositoryOfIdBookmarked,
-} = useRepositoriesStore();
+const { repositories, totalPages, getRepositoriesOfQuery, getRepositoryOfId } =
+  useRepositoriesStore();
+const { addBookmark, removeBookmarkOfId, bookmarkOfIdExists } =
+  useBookmarksStore();
 
 const ctxTopic = readonly(topicsStore.getByKey(props.topic));
 
@@ -41,10 +38,14 @@ watchEffect(async () => {
 });
 
 const toggleBookmark = ($repo) => {
-  if (isRepositoryOfIdBookmarked($repo.Id)) {
-    removeRepositoryBookmarkOfId($repo.Id);
+  console.log({ $repo });
+  if (bookmarkOfIdExists($repo.Id)) {
+    removeBookmarkOfId($repo.Id);
   } else {
-    bookmarkRepositoryOfId($repo.Id);
+    const repo = getRepositoryOfId($repo.Id);
+    console.log({ repo });
+    if (!repo) return;
+    addBookmark(repo);
   }
 };
 </script>

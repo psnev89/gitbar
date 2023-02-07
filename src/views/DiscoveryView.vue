@@ -1,5 +1,5 @@
 <script setup>
-import { useRepositoriesStore } from "@/stores/useRepositoriesStore";
+import { useBookmarksStore } from "@/stores/useBookmarksStore";
 import { useTopicsStore } from "@/stores/useTopicsStore";
 import { reactive } from "vue";
 
@@ -10,7 +10,16 @@ import AppSectionTitle from "../components/ui/AppSectionTitle.vue";
 import RepositoryList from "../components/RepositoryList.vue";
 
 const topicsStore = useTopicsStore();
-const { bookmarkedRepositories } = useRepositoriesStore();
+const bookmarksPerPage = 6;
+const {
+  allBookmarkedRepositories,
+  paginatedBookmarkedRepositories,
+  hasNextPage,
+  hasPreviousPage,
+  nextPage,
+  previousPage,
+  removeBookmarkOfId,
+} = useBookmarksStore({ perPage: bookmarksPerPage });
 
 const selectedTopics = reactive([...topicsStore.allTopics]);
 const toggleTopicSelection = (topic) => {
@@ -27,9 +36,14 @@ const toggleTopicSelection = (topic) => {
       <AppSectionTitle title="My Bookmarks" class="mb-4"></AppSectionTitle>
 
       <RepositoryList
-        v-if="bookmarkedRepositories.length"
-        :repositories="bookmarkedRepositories"
-        :per-page="6"
+        v-if="allBookmarkedRepositories.length"
+        :repositories="paginatedBookmarkedRepositories"
+        :per-page="bookmarksPerPage"
+        :has-next-page="hasNextPage"
+        :has-previous-page="hasPreviousPage"
+        @previous-page="previousPage"
+        @next-page="nextPage"
+        @repo-bookmark="removeBookmarkOfId($event.Id)"
       ></RepositoryList>
       <div v-else class="text-sm text-left">
         Bookmarked repositories will be displayed here
