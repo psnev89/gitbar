@@ -4,7 +4,7 @@ import {
   signUserOut,
   updateUserProfile,
 } from "@/services/auth";
-import { computed, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import User from "@/models/User";
 
 // shared state

@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 
 // firebase config
 const config = {
-  apiKey: "AIzaSyB4K3xijcALPyI4Rz_3emzRWa__HSz6evA",
-  authDomain: "gh-gitbar.firebaseapp.com",
-  projectId: "gh-gitbar",
-  storageBucket: "gh-gitbar.appspot.com",
-  messagingSenderId: "454692550816",
-  appId: "1:454692550816:web:6b138d26ee077deb5a31c5",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(config);
