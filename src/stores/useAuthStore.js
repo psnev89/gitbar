@@ -4,24 +4,29 @@ import {
   signUserOut,
   updateUserProfile,
 } from "@/services/auth";
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import User from "@/models/User";
 
 // shared state
-const userData = reactive({});
+const userData = ref(null);
 
 export const useAuthStore = () => {
   // getters
   const user = computed(
-    () => new User(userData.uid, userData.email, userData.displayName)
+    () =>
+      new User(
+        userData.value.uid,
+        userData.value.email,
+        userData.value.displayName
+      )
   );
-  const isLoggedIn = computed(() => !!userData.uid);
+  const isLoggedIn = computed(() => !!userData?.value?.uid);
 
   // actions
   // set user
   const setUser = (user) => {
-    Object.assign(userData, { ...user });
-    return user;
+    userData.value = user;
+    return userData.value;
   };
 
   // register user
@@ -56,8 +61,14 @@ export const useAuthStore = () => {
     let error, data;
     await updateUserProfile({ username, email })
       .then((res) => {
-        userData.displayName = username;
-        userData.email = email;
+        const u = {
+          ...(userData.value ?? {}),
+          ...{
+            displayName: username,
+            email,
+          },
+        };
+        setUser(u);
         data = res;
       })
       .catch((err) => (error = err));
