@@ -31,8 +31,5 @@ const {
       @next-page="nextPage"
       @repo-bookmark="removeBookmarkOfId($event.Id)"
     ></RepositoryList>
-    <div v-else class="text-sm text-left">
-      Bookmarked repositories will be displayed here
-    </div>
   </section>
 </template>

@@ -1,5 +1,6 @@
 <script setup>
 import { useTopicsStore } from "@/stores/useTopicsStore";
+import { useBookmarksStore } from "@/stores/useBookmarksStore";
 import { reactive } from "vue";
 
 // components
@@ -8,6 +9,7 @@ import BookmarkedRepositoriesSection from "@/components/BookmarkedRepositoriesSe
 import AppButton from "@/components/ui/AppButton.vue";
 
 const topicsStore = useTopicsStore();
+const { allBookmarkedRepositories } = useBookmarksStore();
 
 const selectedTopics = reactive([...topicsStore.allTopics]);
 const toggleTopicSelection = (topic) => {
@@ -20,7 +22,9 @@ const toggleTopicSelection = (topic) => {
 <template>
   <main>
     <!-- Bookmarks section -->
-    <BookmarkedRepositoriesSection></BookmarkedRepositoriesSection>
+    <BookmarkedRepositoriesSection
+      v-show="allBookmarkedRepositories.length"
+    ></BookmarkedRepositoriesSection>
 
     <!-- Topics Toggler section -->
     <section>
