@@ -8,6 +8,7 @@ import { RouterLink, useRouter } from "vue-router";
 import AppInput from "../components/ui/AppInput.vue";
 import AppButton from "../components/ui/AppButton.vue";
 import AppErrorFeedback from "../components/ui/AppErrorFeedback.vue";
+import AppSectionTitle from "../components/ui/AppSectionTitle.vue";
 
 // form initial state
 const form = reactive({
@@ -42,6 +43,8 @@ const handleSubmit = async () => {
 
 <template>
   <main class="max-w-sm">
+    <AppSectionTitleVue title="Register" class="mb-10"></AppSectionTitleVue>
+
     <form @submit.prevent="handleSubmit">
       <AppInput v-model="form.email" type="email" label="Email"></AppInput>
       <AppInput
@@ -54,7 +57,7 @@ const handleSubmit = async () => {
         :disabled="isLoading"
         active
         class="block w-full rounded-md"
-        label="Sign In"
+        label="Register"
         @click="handleSubmit"
       ></AppButton>
     </form>
